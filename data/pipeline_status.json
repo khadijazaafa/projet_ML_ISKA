@@ -1,0 +1,56 @@
+{
+  "last_run": "2026-06-07T18:04:31.951565+00:00",
+  "pipeline_results": {
+    "fetch": {
+      "Classification (24h)": true,
+      "TimeSeries Global (semaine)": true,
+      "Zones de risque (semaine)": true
+    },
+    "mlops": {
+      "model_comparison": true,
+      "model_selection": true,
+      "weekly_training": "skipped",
+      "selection_result": {
+        "selected_model": null,
+        "metrics": null,
+        "improvement_percent": 0,
+        "action": "no_models_tested"
+      }
+    }
+  },
+  "models_available": {
+    "kmeans_zones": {
+      "path": "D:\\pfmML\\PFM\\projet_vf\\models\\kmeans_zones.pkl",
+      "size_kb": 678.6
+    },
+    "model_Random_Forest": {
+      "path": "D:\\pfmML\\PFM\\projet_vf\\models\\model_Random_Forest.pkl",
+      "size_kb": 7190.7
+    },
+    "model_xgb_global": {
+      "path": "D:\\pfmML\\PFM\\projet_vf\\models\\model_xgb_global.pkl",
+      "size_kb": 191.4
+    },
+    "model_xgb_global_high": {
+      "path": "D:\\pfmML\\PFM\\projet_vf\\models\\model_xgb_global_high.pkl",
+      "size_kb": 683.1
+    },
+    "model_xgb_global_low": {
+      "path": "D:\\pfmML\\PFM\\projet_vf\\models\\model_xgb_global_low.pkl",
+      "size_kb": 757.5
+    },
+    "model_xgb_zone": {
+      "path": "D:\\pfmML\\PFM\\projet_vf\\models\\model_xgb_zone.pkl",
+      "size_kb": 593.2
+    },
+    "rf_pipeline": {
+      "path": "D:\\pfmML\\PFM\\projet_vf\\models\\rf_pipeline.pkl",
+      "size_kb": 7961.9
+    },
+    "scaler_geo": {
+      "path": "D:\\pfmML\\PFM\\projet_vf\\models\\scaler_geo.pkl",
+      "size_kb": 0.9
+    }
+  },
+  "versioned_models_count": 14
+}

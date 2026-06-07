@@ -1,0 +1,13 @@
+# requirements.txt
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pandas==2.1.3
+numpy==1.23.5
+scikit-learn==1.3.2
+xgboost==2.0.3
+joblib==1.3.2
+requests==2.31.0
+apscheduler==3.10.4
+# Nouveaux pour MLOps
+optuna==3.4.0  # Pour hyperparameter tuning
+mlflow==2.8.0  # Pour tracking (optionnel)
