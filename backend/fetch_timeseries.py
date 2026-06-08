@@ -289,7 +289,7 @@ def run():
     df_week["energy"] = 10 ** (1.5 * df_week["mag"].fillna(0))
 
     new_row = {
-        "date": pd.Timestamp(end_time.date()) - pd.Timedelta(days=end_time.weekday()),
+        "date": pd.Timestamp(end_time.date()),
         "nb_seismes": len(df_week),
         "mag_max": df_week["mag"].max(),
         "mag_mean": df_week["mag"].mean(),
