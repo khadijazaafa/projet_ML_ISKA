@@ -1,6 +1,5 @@
 {
-  "last_run": "2026-06-08T14:14:48.154381+00:00",
+  "last_run": "2026-06-15T16:14:20.581617+00:00",
   "status": "success",
-  "message": "Pipeline completed successfully",
-  "next_scheduled": null
+  "message": "Pipeline completed successfully"
 }

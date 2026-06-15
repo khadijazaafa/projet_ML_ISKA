@@ -1,8 +1,8 @@
 """
 main.py
 =======
-FastAPI backend — Seismic Dashboard avec MLOPS
-Version avec lifespan (plus de warning) et port configurable
+FastAPI backend — Seismic Dashboard (version simplifiée sans MLOPS)
+Avec lifespan (plus de warning) et port configurable
 """
 
 import json
@@ -12,7 +12,7 @@ import time
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Optional, Dict, Any
+from typing import Dict, Any
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, BackgroundTasks
@@ -29,39 +29,31 @@ BASE_DIR = Path(__file__).parent.parent
 DATA_DIR = BASE_DIR / "data"
 FRONTEND = BASE_DIR / "frontend"
 BACKEND_DIR = BASE_DIR / "backend"
-MODELS_DIR = BASE_DIR / "models"
-VERSIONS_DIR = MODELS_DIR / "versions"
 
-# Fichiers JSON existants
+# Fichiers JSON produits par les scripts fetch_*
 CLASSIFICATION_JSON = DATA_DIR / "output_classification.json"
 FORECAST_JSON = DATA_DIR / "output_forecast.json"
 ZONES_JSON = DATA_DIR / "output_zones.json"
-
-# Nouveaux fichiers MLOPS
-MODEL_METRICS_CSV = DATA_DIR / "model_metrics.csv"
-CURRENT_BEST_JSON = DATA_DIR / "current_best_model.json"
-PIPELINE_STATUS_JSON = DATA_DIR / "pipeline_status.json"
-MLOPS_LOG_JSON = DATA_DIR / "mlops_pipeline_log.json"
+PIPELINE_STATUS_JSON = DATA_DIR / "pipeline_status.json"  # statut simplifié
 
 # Variables globales pour le scheduler
 scheduler_thread = None
 pipeline_running = False
 
 
-# ── LIFESPAN CONTEXT MANAGER (remplace on_event) ─────────────
+# ── LIFESPAN CONTEXT MANAGER ─────────────────────────────────
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Gère le démarrage et l'arrêt de l'application"""
     global scheduler_thread, pipeline_running
     
     print("=" * 55)
-    print("  🌍 SEISMIC INTELLIGENCE API v2.0")
-    print("  🤖 MLOPS Enabled")
+    print("  🌍 SEISMIC INTELLIGENCE API (version allégée)")
+    print("  📡 Données rafraîchies périodiquement")
     print("=" * 55)
     
     # === STARTUP (avant le yield) ===
     DATA_DIR.mkdir(exist_ok=True)
-    VERSIONS_DIR.mkdir(exist_ok=True, parents=True)
     
     data_exists = CLASSIFICATION_JSON.exists() and FORECAST_JSON.exists()
     
@@ -70,19 +62,6 @@ async def lifespan(app: FastAPI):
         threading.Thread(target=run_pipeline, daemon=True).start()
     else:
         print("✅ Données existantes trouvées")
-        
-        if CURRENT_BEST_JSON.exists():
-            try:
-                with open(CURRENT_BEST_JSON, 'r') as f:
-                    current = json.load(f)
-                    prod_model = current.get('production_model', {})
-                    print(f"🎯 Modèle en production: {prod_model.get('model_name', 'unknown')}")
-            except Exception:
-                pass
-        
-        if VERSIONS_DIR.exists():
-            n_versions = len(list(VERSIONS_DIR.glob("*.pkl")))
-            print(f"📦 Modèles versionnés: {n_versions}")
     
     scheduler_thread = threading.Thread(
         target=background_scheduler,
@@ -106,10 +85,10 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="Seismic Intelligence API",
     version="2.0.0",
-    description="API de prédiction sismique avec MLOPS intégré",
+    description="API de prédiction sismique (version simplifiée)",
     docs_url="/api/docs",
     redoc_url="/api/redoc",
-    lifespan=lifespan  # Plus de warning !
+    lifespan=lifespan
 )
 
 # Serve les fichiers statiques
@@ -127,54 +106,23 @@ def read_json(path: Path) -> dict:
         return json.load(f)
 
 
-def read_csv_as_json(csv_path: Path, limit: int = None) -> list:
-    if not csv_path.exists():
-        return []
-    try:
-        import pandas as pd
-        df = pd.read_csv(csv_path)
-        if limit:
-            df = df.tail(limit)
-        return df.to_dict(orient='records')
-    except Exception:
-        return []
-
-
-def get_model_performance_summary() -> Dict:
-    summary = {
-        "current_model": None,
-        "best_model_history": [],
-        "recent_performance": [],
-        "improvement_trend": None
+def update_pipeline_status(status: str, message: str = ""):
+    """Met à jour le fichier de statut simplifié"""
+    status_data = {
+        "last_run": datetime.now(timezone.utc).isoformat(),
+        "status": status,
+        "message": message,
     }
-    
-    if CURRENT_BEST_JSON.exists():
-        try:
-            with open(CURRENT_BEST_JSON, 'r') as f:
-                current = json.load(f)
-                summary["current_model"] = current.get('production_model')
-        except Exception:
-            pass
-    
-    if MODEL_METRICS_CSV.exists():
-        metrics_df = read_csv_as_json(MODEL_METRICS_CSV, limit=20)
-        summary["recent_performance"] = metrics_df
-        
-        if len(metrics_df) >= 2:
-            try:
-                last_rmse = metrics_df[-1].get('rmse', 0)
-                prev_rmse = metrics_df[-2].get('rmse', 0)
-                if prev_rmse > 0:
-                    improvement = ((prev_rmse - last_rmse) / prev_rmse) * 100
-                    summary["improvement_trend"] = round(improvement, 1)
-            except Exception:
-                pass
-    
-    return summary
+    try:
+        with open(PIPELINE_STATUS_JSON, 'w', encoding='utf-8') as f:
+            json.dump(status_data, f, indent=2)
+    except Exception as e:
+        print(f"Erreur mise à jour statut: {e}")
 
 
 # ── BACKGROUND REFRESH ────────────────────────────────────────
-def run_pipeline(run_mlops: bool = True):
+def run_pipeline():
+    """Exécute le pipeline simplifié (run_all.py)"""
     global pipeline_running
     
     if pipeline_running:
@@ -211,28 +159,16 @@ def run_pipeline(run_mlops: bool = True):
         pipeline_running = False
 
 
-def update_pipeline_status(status: str, message: str = ""):
-    status_data = {
-        "last_run": datetime.now(timezone.utc).isoformat(),
-        "status": status,
-        "message": message,
-        "next_scheduled": None
-    }
-    try:
-        with open(PIPELINE_STATUS_JSON, 'w', encoding='utf-8') as f:
-            json.dump(status_data, f, indent=2)
-    except Exception as e:
-        print(f"Erreur mise à jour statut: {e}")
-
-
 def background_scheduler(interval_hours: int = 6):
+    """Boucle infinie qui lance le pipeline toutes les X heures"""
     while True:
         time.sleep(interval_hours * 3600)
         print(f"\n🔄 Exécution planifiée du pipeline (interval {interval_hours}h)")
-        run_pipeline(run_mlops=True)
+        run_pipeline()
 
 
 # ── ENDPOINTS ─────────────────────────────────────────────────
+
 @app.get("/")
 def index():
     html_file = FRONTEND / "index.html"
@@ -252,23 +188,12 @@ def status():
             return {"exists": True, "updated_at": mtime, "size_kb": size_kb}
         return {"exists": False}
 
-    mlops_info = {}
-    if CURRENT_BEST_JSON.exists():
-        try:
-            with open(CURRENT_BEST_JSON, 'r') as f:
-                mlops_info["current_best"] = json.load(f)
-        except Exception:
-            pass
-    
-    if MODEL_METRICS_CSV.exists():
-        mlops_info["metrics_available"] = True
-    
     return JSONResponse({
         "api_time": datetime.now(timezone.utc).isoformat(),
         "classification": file_info(CLASSIFICATION_JSON),
         "forecast": file_info(FORECAST_JSON),
         "zones": file_info(ZONES_JSON),
-        "mlops": mlops_info
+        "pipeline_status": read_json(PIPELINE_STATUS_JSON) if PIPELINE_STATUS_JSON.exists() else None
     })
 
 
@@ -289,44 +214,13 @@ def get_zones():
 
 @app.post("/api/refresh")
 def trigger_refresh(background_tasks: BackgroundTasks):
-    background_tasks.add_task(run_pipeline, run_mlops=True)
+    """Déclenche manuellement le pipeline (fetch + prediction)"""
+    background_tasks.add_task(run_pipeline)
     return JSONResponse({
         "status": "started",
-        "message": "Pipeline lancé en background avec MLOPS",
+        "message": "Pipeline lancé en arrière-plan",
         "started_at": datetime.now(timezone.utc).isoformat()
     })
-
-
-@app.get("/api/models/current")
-def get_current_model():
-    if not CURRENT_BEST_JSON.exists():
-        return JSONResponse({"status": "no_model"})
-    try:
-        with open(CURRENT_BEST_JSON, 'r') as f:
-            return JSONResponse(json.load(f))
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@app.get("/api/models/compare")
-def compare_models(weeks: int = 4):
-    if not MODEL_METRICS_CSV.exists():
-        return JSONResponse({"status": "no_data"})
-    try:
-        import pandas as pd
-        df = pd.read_csv(MODEL_METRICS_CSV)
-        df['week_start'] = pd.to_datetime(df['week_start'])
-        last_weeks = df['week_start'].max() - pd.Timedelta(weeks=weeks)
-        df_recent = df[df['week_start'] >= last_weeks]
-        comparison = df_recent.groupby('model_name').agg({
-            'rmse': 'mean', 'mae': 'mean', 'r2': 'mean'
-        }).round(4).sort_values('rmse')
-        return JSONResponse({
-            "weeks_analyzed": weeks,
-            "comparison": comparison.to_dict(orient='index')
-        })
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.get("/api/health")
@@ -336,24 +230,28 @@ def health_check():
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "version": "2.0.0"
     })
+
+
+# Endpoints MLOPS désactivés (anciennement utilisés)
+@app.get("/api/models/current")
+def get_current_model():
+    return JSONResponse({"status": "disabled", "message": "MLOPS non actif"})
+
+
+@app.get("/api/models/compare")
+def compare_models():
+    return JSONResponse({"status": "disabled", "message": "MLOPS non actif"})
+
+
 @app.get("/api/zones/models")
 def get_zones_models():
-    """Liste tous les modèles de zones disponibles"""
-    metadata_path = DATA_DIR / "zones_models_metadata.json"
-    if metadata_path.exists():
-        with open(metadata_path, 'r') as f:
-            return JSONResponse(json.load(f))
-    return JSONResponse({"status": "no_models"})
+    return JSONResponse({"status": "disabled", "message": "MLOPS non actif"})
+
 
 @app.get("/api/zones/model/{zone_id}")
 def get_zone_model(zone_id: int):
-    """Récupère le modèle pour une zone spécifique"""
-    metadata_path = DATA_DIR / "zones_models_metadata.json"
-    if metadata_path.exists():
-        with open(metadata_path, 'r') as f:
-            metadata = json.load(f)
-            return JSONResponse(metadata.get(str(zone_id), {"status": "not_found"}))
-    return JSONResponse({"status": "no_models"})
+    return JSONResponse({"status": "disabled", "message": "MLOPS non actif"})
+
 
 # ── RUN LOCAL ─────────────────────────────────────────────────
 if __name__ == "__main__":
@@ -367,7 +265,7 @@ if __name__ == "__main__":
     
     print(f"""
     ╔══════════════════════════════════════════════════════════╗
-    ║     SEISMIC INTELLIGENCE API v2.0 avec MLOPS           ║
+    ║     SEISMIC INTELLIGENCE API (version simplifiée)        ║
     ║     🚀 http://{args.host}:{args.port}                            ║
     ║     📊 http://{args.host}:{args.port}/api/docs                  ║
     ╚══════════════════════════════════════════════════════════╝

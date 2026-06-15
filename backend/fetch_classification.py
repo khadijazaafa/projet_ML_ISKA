@@ -5,8 +5,8 @@ Télécharge les séismes des dernières 24h depuis USGS,
 applique tout le preprocessing, prédit la classe (Faible/Modéré/Strong)
 et sauvegarde → data/output_classification.json
 
-🔄 Amélioration : Charge automatiquement le meilleur modèle disponible
-(versionné ou modèle par défaut)
+🔧 Modification : Utilise uniquement le modèle rf_pipeline.pkl,
+sans chercher de version plus récente.
 """
 
 import sys
@@ -23,131 +23,7 @@ from sklearn.impute import KNNImputer, SimpleImputer
 # ── CHEMINS ───────────────────────────────────────────────────
 BASE_DIR = Path(__file__).parent.parent
 MODEL_PATH = BASE_DIR / "models" / "rf_pipeline.pkl"
-VERSIONS_DIR = BASE_DIR / "models" / "versions"
-METADATA_PATH = BASE_DIR / "data" / "current_best_model.json"
 OUTPUT = BASE_DIR / "data" / "output_classification.json"
-
-
-def get_best_classification_model():
-    """
-    Charge le meilleur modèle de classification disponible.
-    Priorité :
-    1. Modèle spécifié dans current_best_model.json
-    2. Dernier modèle versionné dans models/versions/
-    3. Modèle par défaut rf_pipeline.pkl
-    """
-    print(" 🔍 Recherche du meilleur modèle de classification...")
-    
-    # 1. Vérifier si un modèle est spécifié dans les métadonnées
-    if METADATA_PATH.exists():
-        try:
-            with open(METADATA_PATH, 'r') as f:
-                metadata = json.load(f)
-            
-            prod_model = metadata.get('production_model', {})
-            model_name = prod_model.get('model_name', '')
-            model_type = prod_model.get('model_type', '')
-            
-            if model_name and 'classification' in model_type.lower():
-                # Chercher le modèle dans versions/
-                model_path = VERSIONS_DIR / f"{model_name}.pkl"
-                if model_path.exists():
-                    print(f"   ✓ Chargement du modèle depuis métadonnées: {model_name}")
-                    return joblib.load(model_path), str(model_path)
-                else:
-                    print(f"   ⚠️ Modèle métadonnées introuvable: {model_path}")
-        except Exception as e:
-            print(f"   ⚠️ Erreur lecture métadonnées: {e}")
-    
-    # 2. Chercher le dernier modèle de classification versionné
-    if VERSIONS_DIR.exists():
-        # Chercher les modèles de classification (rf_pipeline, random_forest_classifier, etc.)
-        classification_patterns = ['rf_pipeline', 'random_forest_classifier', 'classification']
-        
-        latest_model = None
-        latest_time = None
-        
-        for model_file in VERSIONS_DIR.glob("*.pkl"):
-            model_name_lower = model_file.stem.lower()
-            # Vérifier si c'est un modèle de classification
-            if any(pattern in model_name_lower for pattern in classification_patterns):
-                mtime = model_file.stat().st_mtime
-                if latest_time is None or mtime > latest_time:
-                    latest_time = mtime
-                    latest_model = model_file
-        
-        if latest_model:
-            print(f"   ✓ Chargement du dernier modèle versionné: {latest_model.name}")
-            return joblib.load(latest_model), str(latest_model)
-    
-    # 3. Fallback vers le modèle par défaut
-    if MODEL_PATH.exists():
-        print(f"   ✓ Chargement du modèle par défaut: {MODEL_PATH.name}")
-        return joblib.load(MODEL_PATH), str(MODEL_PATH)
-    
-    raise FileNotFoundError("Aucun modèle de classification trouvé!")
-
-
-def load_ensemble_models():
-    """
-    Optionnel : Charge plusieurs modèles pour faire un ensemble (voting)
-    Retourne une liste de modèles avec leurs poids
-    """
-    models = []
-    
-    # Chercher tous les modèles de classification disponibles
-    if VERSIONS_DIR.exists():
-        for model_file in VERSIONS_DIR.glob("*rf*.pkl"):
-            try:
-                model = joblib.load(model_file)
-                # Utiliser la date de modification comme poids (plus récent = plus de poids)
-                weight = model_file.stat().st_mtime
-                models.append({
-                    'model': model,
-                    'name': model_file.stem,
-                    'weight': weight
-                })
-                print(f"   ✓ Modèle chargé pour ensemble: {model_file.stem}")
-            except Exception as e:
-                print(f"   ⚠️ Erreur chargement {model_file.name}: {e}")
-    
-    return models
-
-
-def predict_with_ensemble(models, X_new, use_ensemble=False):
-    """
-    Fait une prédiction avec un ensemble de modèles (voting pondéré)
-    """
-    if not use_ensemble or len(models) < 2:
-        return None, None
-    
-    all_probas = []
-    weights = []
-    
-    for m in models:
-        try:
-            proba = m['model'].predict_proba(X_new)
-            all_probas.append(proba)
-            weights.append(m['weight'])
-        except Exception as e:
-            print(f"   ⚠️ Erreur prédiction avec {m['name']}: {e}")
-    
-    if not all_probas:
-        return None, None
-    
-    # Normaliser les poids
-    weights = np.array(weights)
-    weights = weights / weights.sum()
-    
-    # Moyenne pondérée des probabilités
-    weighted_proba = np.zeros_like(all_probas[0])
-    for proba, w in zip(all_probas, weights):
-        weighted_proba += proba * w
-    
-    y_pred = np.argmax(weighted_proba, axis=1)
-    y_pred_proba = weighted_proba
-    
-    return y_pred, y_pred_proba
 
 
 def run():
@@ -155,20 +31,17 @@ def run():
     print("  CLASSIFICATION — Démarrage")
     print("=" * 55)
 
-    # ── 1. CHARGER LE MEILLEUR MODÈLE ─────────────────────────
+    # ── 1. CHARGEMENT DIRECT DU MODÈLE ─────────────────────────
     print("\n📦 Chargement du modèle...")
-    try:
-        rf_model, model_path = get_best_classification_model()
-        print(f" ✅ Modèle chargé: {Path(model_path).name}")
-    except Exception as e:
-        print(f" ❌ Erreur chargement modèle: {e}")
+    if not MODEL_PATH.exists():
+        print(f" ❌ Modèle introuvable : {MODEL_PATH}")
         return
-    
-    # Optionnel : Charger des modèles supplémentaires pour ensemble
-    ensemble_models = load_ensemble_models()
-    use_ensemble = len(ensemble_models) >= 2
-    if use_ensemble:
-        print(f" 🎯 Mode ensemble activé avec {len(ensemble_models)} modèles")
+    try:
+        rf_model = joblib.load(MODEL_PATH)
+        print(f" ✅ Modèle chargé : {MODEL_PATH.name}")
+    except Exception as e:
+        print(f" ❌ Erreur chargement modèle : {e}")
+        return
 
     # ── 2. TÉLÉCHARGEMENT USGS (24h) ──────────────────────────
     end_time = datetime.now(timezone.utc)
@@ -274,6 +147,7 @@ def run():
         df_raw[target_col] = imp.fit_transform(df_raw[cols])[:, -1]
 
     # ── 9. ONE-HOT ENCODE 'net' ───────────────────────────────
+    # Récupérer les colonnes net_ attendues par le modèle
     net_cols_train = [c for c in rf_model.feature_names_in_ if c.startswith("net_")]
     net_dummies = pd.get_dummies(df_raw["net"], prefix="net")
 
@@ -305,19 +179,9 @@ def run():
     X_new = X_new[expected]
 
     # ── 12. PRÉDICTION ────────────────────────────────────────
-    # Essayer avec ensemble si disponible
-    y_pred_ensemble, y_pred_proba_ensemble = predict_with_ensemble(
-        ensemble_models, X_new, use_ensemble
-    )
-    
-    if y_pred_ensemble is not None:
-        y_pred = y_pred_ensemble
-        y_pred_proba = y_pred_proba_ensemble
-        print("   ✅ Prédiction avec ensemble de modèles")
-    else:
-        y_pred = rf_model.predict(X_new)
-        y_pred_proba = rf_model.predict_proba(X_new)
-        print("   ✅ Prédiction avec modèle unique")
+    y_pred = rf_model.predict(X_new)
+    y_pred_proba = rf_model.predict_proba(X_new)
+    print("   ✅ Prédiction effectuée")
 
     CLASS_MAP = {0: "Faible", 1: "Modéré", 2: "Strong"}
     EMOJI_MAP = {0: "🟢", 1: "🟡", 2: "🔴"}
@@ -352,7 +216,7 @@ def run():
         "count_faible": int((y_pred == 0).sum()),
         "count_modere": int((y_pred == 1).sum()),
         "count_strong": int((y_pred == 2).sum()),
-        "model_used": Path(model_path).name if not use_ensemble else f"ensemble_{len(ensemble_models)}_models",
+        "model_used": MODEL_PATH.name,
         "earthquakes": records,
     }
 

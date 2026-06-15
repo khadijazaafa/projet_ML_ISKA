@@ -1,7 +1,8 @@
 """
 fetch_zones.py
 ==============
-Version corrigée pour Docker
+Version corrigée pour Docker - Utilise uniquement les modèles fixes,
+sans recherche de versions ni chargement de modèles par zone.
 """
 
 import sys
@@ -20,32 +21,8 @@ KMEANS_PATH = BASE_DIR / "models" / "kmeans_zones.pkl"
 SCALER_PATH = BASE_DIR / "models" / "scaler_geo.pkl"
 ZONE_HIST_CSV = BASE_DIR / "data" / "zone_history.csv"
 OUTPUT = BASE_DIR / "data" / "output_zones.json"
-VERSIONS_DIR = BASE_DIR / "models" / "versions"
 
 FEATURES_ZONE = ["lag_1", "lag_2", "lag_3", "lag_4", "rolling_mean_4", "rolling_mean_8"]
-
-
-def load_zone_models():
-    """Charge tous les modèles de zones disponibles"""
-    zone_models = {}
-    
-    if VERSIONS_DIR.exists():
-        for model_file in VERSIONS_DIR.glob("*zone*.pkl"):
-            try:
-                # Extraire le numéro de zone
-                name = model_file.stem
-                if 'zone_' in name:
-                    parts = name.split('zone_')
-                    if len(parts) > 1:
-                        zone_str = parts[1].split('_')[0]
-                        if zone_str.isdigit():
-                            zone_id = int(zone_str)
-                            zone_models[zone_id] = joblib.load(model_file)
-                            print(f"   ✓ Zone {zone_id}: chargé")
-            except Exception as e:
-                print(f"   ⚠️ Erreur: {model_file.name}")
-    
-    return zone_models
 
 
 def run():
@@ -53,7 +30,7 @@ def run():
     print("  ZONES DE RISQUE — Démarrage")
     print("=" * 55)
 
-    # Charger les modèles
+    # Charger les modèles fixes
     print("\n📦 Chargement des modèles...")
     try:
         kmeans = joblib.load(KMEANS_PATH)
@@ -62,9 +39,6 @@ def run():
     except Exception as e:
         print(f"   ❌ Erreur: {e}")
         return
-    
-    zone_models = load_zone_models()
-    print(f"   ✅ {len(zone_models)} modèles de zones chargés")
 
     # Charger l'historique
     if not ZONE_HIST_CSV.exists():
@@ -75,7 +49,7 @@ def run():
     zone_hist = zone_hist.sort_values(["zone", "date"]).reset_index(drop=True)
     print(f"\n📊 Historique: {len(zone_hist)} lignes")
 
-    # Fetch USGS
+    # Fetch USGS (7 derniers jours)
     end_time = datetime.now(timezone.utc)
     start_time = end_time - timedelta(days=7)
 
@@ -127,7 +101,7 @@ def run():
     zone_hist = pd.concat([zone_hist, zone_agg], ignore_index=True)
     zone_hist = zone_hist.sort_values(["zone", "date"]).reset_index(drop=True)
 
-    # Calculer les features
+    # Calculer les features (pour usage futur, mais pas utilisé pour prédire)
     for lag in [1, 2, 3, 4]:
         zone_hist[f"lag_{lag}"] = zone_hist.groupby("zone")["nb_seismes"].shift(lag)
 
@@ -137,31 +111,19 @@ def run():
     zone_hist.to_csv(ZONE_HIST_CSV, index=False)
     print(f"\n💾 Historique mis à jour")
 
-    # Prédictions
+    # Prédictions par zone (utilisation de la dernière valeur observée comme prédiction)
     last_per_zone = zone_hist.dropna().sort_values("date").groupby("zone").tail(1).reset_index(drop=True)
     
     results = []
     for _, row in last_per_zone.iterrows():
         zone_id = int(row["zone"])
-        
-        feature_vector = [row.get(f, 0) for f in FEATURES_ZONE]
-        X = np.array([feature_vector])
-        
-        pred = 0
-        if zone_id in zone_models:
-            try:
-                pred = int(zone_models[zone_id].predict(X)[0])
-                pred = max(0, pred)
-            except:
-                pred = int(row.get("nb_seismes", 0))
-        else:
-            pred = int(row.get("nb_seismes", 0))
-        
+        # Prédiction simple : dernière valeur observée (fallback)
+        pred = int(row.get("nb_seismes", 0))
         results.append({"zone": zone_id, "pred_seismes": pred})
 
     results_df = pd.DataFrame(results)
     
-    # Niveaux de risque
+    # Niveaux de risque basés sur les percentiles
     if len(results_df) > 0:
         p33 = np.percentile(results_df["pred_seismes"], 33)
         p66 = np.percentile(results_df["pred_seismes"], 66)

@@ -1,102 +1,102 @@
 {
   "0": {
-    "model_path": "D:\\pfmML\\PFM\\projet_vf\\models\\versions\\xgboost_zone_zone_0_202622.pkl",
+    "model_path": "D:\\pfmML\\PFM\\projet_vf\\models\\versions\\xgboost_zone_zone_0_202623.pkl",
     "metrics": {
       "rmse": 8.36,
       "mae": 4.4,
       "mape": 40.6,
       "training_time_sec": 0
     },
-    "training_date": "2026-06-07T18:45:50.633292"
+    "training_date": "2026-06-14T20:00:32.670658"
   },
   "1": {
-    "model_path": "D:\\pfmML\\PFM\\projet_vf\\models\\versions\\xgboost_zone_zone_1_202622.pkl",
+    "model_path": "D:\\pfmML\\PFM\\projet_vf\\models\\versions\\xgboost_zone_zone_1_202623.pkl",
     "metrics": {
       "rmse": 12.34,
       "mae": 7.88,
       "mape": 22.4,
       "training_time_sec": 0
     },
-    "training_date": "2026-06-07T18:45:50.633818"
+    "training_date": "2026-06-14T20:00:32.670796"
   },
   "2": {
-    "model_path": "D:\\pfmML\\PFM\\projet_vf\\models\\versions\\xgboost_zone_zone_2_202622.pkl",
+    "model_path": "D:\\pfmML\\PFM\\projet_vf\\models\\versions\\xgboost_zone_zone_2_202623.pkl",
     "metrics": {
       "rmse": 6.68,
       "mae": 4.64,
       "mape": 20.2,
       "training_time_sec": 0
     },
-    "training_date": "2026-06-07T18:45:50.634101"
+    "training_date": "2026-06-14T20:00:32.681653"
   },
   "3": {
-    "model_path": "D:\\pfmML\\PFM\\projet_vf\\models\\versions\\xgboost_zone_zone_3_202622.pkl",
+    "model_path": "D:\\pfmML\\PFM\\projet_vf\\models\\versions\\xgboost_zone_zone_3_202623.pkl",
     "metrics": {
       "rmse": 18.26,
       "mae": 10.96,
       "mape": 14.9,
       "training_time_sec": 0
     },
-    "training_date": "2026-06-07T18:45:50.634174"
+    "training_date": "2026-06-14T20:00:32.683779"
   },
   "4": {
-    "model_path": "D:\\pfmML\\PFM\\projet_vf\\models\\versions\\xgboost_zone_zone_4_202622.pkl",
+    "model_path": "D:\\pfmML\\PFM\\projet_vf\\models\\versions\\xgboost_zone_zone_4_202623.pkl",
     "metrics": {
       "rmse": 9.16,
       "mae": 4.93,
       "mape": 45.4,
       "training_time_sec": 0
     },
-    "training_date": "2026-06-07T18:45:50.634225"
+    "training_date": "2026-06-14T20:00:32.683892"
   },
   "5": {
-    "model_path": "D:\\pfmML\\PFM\\projet_vf\\models\\versions\\xgboost_zone_zone_5_202622.pkl",
+    "model_path": "D:\\pfmML\\PFM\\projet_vf\\models\\versions\\xgboost_zone_zone_5_202623.pkl",
     "metrics": {
       "rmse": 14.45,
       "mae": 7.22,
       "mape": 20.4,
       "training_time_sec": 0
     },
-    "training_date": "2026-06-07T18:45:50.634271"
+    "training_date": "2026-06-14T20:00:32.683949"
   },
   "6": {
-    "model_path": "D:\\pfmML\\PFM\\projet_vf\\models\\versions\\xgboost_zone_zone_6_202622.pkl",
+    "model_path": "D:\\pfmML\\PFM\\projet_vf\\models\\versions\\xgboost_zone_zone_6_202623.pkl",
     "metrics": {
       "rmse": 7.4,
       "mae": 4.84,
       "mape": 23.2,
       "training_time_sec": 0
     },
-    "training_date": "2026-06-07T18:45:50.634314"
+    "training_date": "2026-06-14T20:00:32.684207"
   },
   "7": {
-    "model_path": "D:\\pfmML\\PFM\\projet_vf\\models\\versions\\xgboost_zone_zone_7_202622.pkl",
+    "model_path": "D:\\pfmML\\PFM\\projet_vf\\models\\versions\\xgboost_zone_zone_7_202623.pkl",
     "metrics": {
       "rmse": 12.95,
       "mae": 6.57,
       "mape": 28.2,
       "training_time_sec": 0
     },
-    "training_date": "2026-06-07T18:45:50.634354"
+    "training_date": "2026-06-14T20:00:32.684301"
   },
   "8": {
-    "model_path": "D:\\pfmML\\PFM\\projet_vf\\models\\versions\\xgboost_zone_zone_8_202622.pkl",
+    "model_path": "D:\\pfmML\\PFM\\projet_vf\\models\\versions\\xgboost_zone_zone_8_202623.pkl",
     "metrics": {
       "rmse": 9.08,
       "mae": 5.87,
       "mape": 25.1,
       "training_time_sec": 0
     },
-    "training_date": "2026-06-07T18:45:50.634395"
+    "training_date": "2026-06-14T20:00:32.684360"
   },
   "9": {
-    "model_path": "D:\\pfmML\\PFM\\projet_vf\\models\\versions\\xgboost_zone_zone_9_202622.pkl",
+    "model_path": "D:\\pfmML\\PFM\\projet_vf\\models\\versions\\xgboost_zone_zone_9_202623.pkl",
     "metrics": {
       "rmse": 11.68,
       "mae": 6.02,
       "mape": 30.7,
       "training_time_sec": 0
     },
-    "training_date": "2026-06-07T18:45:50.634435"
+    "training_date": "2026-06-14T20:00:32.684409"
   }
 }

@@ -1,7 +1,0 @@
-{
-  "production_model": null,
-  "backtest_weeks": 4,
-  "min_improvement_threshold": 0.05,
-  "retrain_schedule": "weekly",
-  "models_to_keep": 12
-}
