@@ -141,11 +141,6 @@ PROJET_VF
 * MAPE : 11.36 %
 * R² : 0.78
 
-## Auteur
-
-Projet de Fin du module
-
-Earthquake Monitoring and Forecasting using Machine Learning.
 
 
 # Installation et lancement
@@ -215,3 +210,8 @@ data/output_classification.json
 data/output_forecast.json
 data/output_zones.json
 ```
+## Auteur
+ZAAFA Khadija / ALDIEBES GHANEM israa
+Projet de Fin du module
+
+Earthquake Monitoring and Forecasting using Machine Learning.
