@@ -26,13 +26,14 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 
 def run_step(name, fn):
-    """Exécute une étape du pipeline avec gestion d'erreurs"""
     print("\n" + "-" * 55)
     print(f"  > {name}")
     print("-" * 55)
     try:
         fn()
         print(f"  ✅ OK - {name}")
+        # Ajoutez l'heure de fin
+        print(f"     Terminé à {datetime.now().strftime('%H:%M:%S')}")
         return True
     except Exception as e:
         print(f"  ❌ ERROR - {name} : {e}")

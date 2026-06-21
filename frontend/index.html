@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="fr" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ISKA SeismicAI | Prévision professionnelle des séismes</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js">
+    </script>
 
     <script>
         tailwind.config = {
@@ -37,22 +41,60 @@
     </script>
 
     <style>
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 9999px; }
-        .dark ::-webkit-scrollbar-thumb { background: #27272a; }
-        ::-webkit-scrollbar-thumb:hover { background: #ef4444; }
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3f3f46;
+            border-radius: 9999px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #27272a;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ef4444;
+        }
 
-        .leaflet-container { font-family: 'Inter', sans-serif !important; }
-        .leaflet-popup-content-wrapper { background: #12121a !important; color: #f4f4f5 !important; border: 1px solid #27272a; border-radius: 8px !important; }
-        .light .leaflet-popup-content-wrapper { background: #ffffff !important; color: #09090b !important; border: 1px solid #e4e4e7; }
-        .leaflet-popup-tip { background: #12121a !important; }
-        .light .leaflet-popup-tip { background: #ffffff !important; }
+        .leaflet-container {
+            font-family: 'Inter', sans-serif !important;
+        }
+        .leaflet-popup-content-wrapper {
+            background: #12121a !important;
+            color: #f4f4f5 !important;
+            border: 1px solid #27272a;
+            border-radius: 8px !important;
+        }
+        .light .leaflet-popup-content-wrapper {
+            background: #ffffff !important;
+            color: #09090b !important;
+            border: 1px solid #e4e4e7;
+        }
+        .leaflet-popup-tip {
+            background: #12121a !important;
+        }
+        .light .leaflet-popup-tip {
+            background: #ffffff !important;
+        }
 
-        .filter-btn { color: #71717a; }
-        .dark .filter-btn { color: #a1a1aa; }
-        .filter-btn.active-filter { background: #ffffff; color: #18181b; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .dark .filter-btn.active-filter { background: #27272a; color: #f4f4f5; }
+        .filter-btn {
+            color: #71717a;
+        }
+        .dark .filter-btn {
+            color: #a1a1aa;
+        }
+        .filter-btn.active-filter {
+            background: #ffffff;
+            color: #18181b;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .dark .filter-btn.active-filter {
+            background: #27272a;
+            color: #f4f4f5;
+        }
 
         .chart-container {
             background: rgba(18, 18, 26, 0.4);
@@ -63,6 +105,19 @@
         .light .chart-container {
             background: rgba(241, 245, 249, 0.5);
         }
+
+        .spinner {
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .btn-loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
     </style>
 </head>
 <body class="bg-zinc-50 dark:bg-darkbg text-zinc-900 dark:text-zinc-100 font-sans antialiased transition-colors duration-300">
@@ -71,7 +126,7 @@
         <div class="flex items-center gap-3">
             <div class="w-7 h-7 bg-rose-500 rounded flex items-center justify-center shadow-sm shadow-rose-500/20">
                 <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
                 </svg>
             </div>
             <div>
@@ -90,12 +145,14 @@
             </div>
             <div id="last-update-txt" class="text-xs font-mono text-zinc-400">--</div>
             <button id="themeToggle" class="p-1.5 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition text-zinc-500 dark:text-zinc-400">
-                <svg class="w-4 h-4 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-                <svg class="w-4 h-4 hidden dark:inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                <svg class="w-4 h-4 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5" /><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" /></svg>
+                <svg class="w-4 h-4 hidden dark:inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
             </button>
             <button id="refreshBtn" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white dark:text-zinc-200 transition-all active:scale-95">
-                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-                Actualiser
+                <svg id="refreshIcon" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+                </svg>
+                <span id="refreshLabel">Actualiser</span>
             </button>
         </div>
     </header>
@@ -103,7 +160,7 @@
     <div class="flex h-[calc(100vh-56px)] overflow-hidden">
         <!-- COLONNE GAUCHE -->
         <div class="w-1/2 flex flex-col p-6 gap-6 overflow-y-auto border-r border-zinc-200 dark:border-zinc-800/60 bg-white dark:bg-darkbg">
-            
+
             <!-- TROIS INDICATEURS -->
             <div class="grid grid-cols-3 gap-4">
                 <div class="border border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-cardbg/40 rounded-lg p-4">
@@ -136,7 +193,7 @@
                         </h3>
                         <span class="text-[9px] text-zinc-500 font-mono">tendance + prédiction</span>
                     </div>
-                    <canvas id="weeklyChart" height="160" style="max-height: 180px; width: 100%;"></canvas>
+                    <canvas id="weeklyChart" height="160" style="max-height:180px;width:100%;"></canvas>
                 </div>
 
                 <div class="chart-container border border-zinc-100 dark:border-zinc-800/60 rounded-xl">
@@ -148,7 +205,7 @@
                         <span class="text-[9px] text-zinc-500 font-mono">confiance IA</span>
                     </div>
                     <div class="flex items-center justify-center">
-                        <canvas id="classDonut" width="180" height="180" style="max-width: 170px; max-height: 170px;"></canvas>
+                        <canvas id="classDonut" width="180" height="180" style="max-width:170px;max-height:170px;"></canvas>
                     </div>
                     <div class="flex justify-center gap-4 mt-2 text-[10px] font-medium">
                         <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span><span>Faible</span><span id="pct-faible" class="text-zinc-400">0%</span></div>
@@ -192,7 +249,7 @@
             <div class="border border-zinc-200 dark:border-zinc-800/80 rounded-xl overflow-hidden h-full flex flex-col bg-white dark:bg-cardbg shadow-sm">
                 <div class="px-4 py-3 border-b border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between bg-zinc-50/50 dark:bg-cardbg/50">
                     <h2 class="text-xs font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-2">
-                        <svg class="w-3.5 h-3.5 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/></svg>
+                        <svg class="w-3.5 h-3.5 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6" /></svg>
                         Couche de risque sismique
                     </h2>
                     <div class="flex gap-4 text-[11px] font-medium font-mono">
@@ -209,29 +266,40 @@
     <div id="toast" class="fixed bottom-6 right-6 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-medium px-4 py-2.5 text-sm rounded-lg shadow-xl opacity-0 transition-all duration-300 translate-y-2 pointer-events-none z-50 border border-zinc-800 dark:border-zinc-200">Initialisation du dashboard</div>
 
     <script>
+        // ============================================================
+        //  CONFIGURATION
+        // ============================================================
         const API_BASE = '';
         let riskMap;
-        let classifData = null, forecastData = null, zonesData = null;
+        let classifData = null,
+            forecastData = null,
+            zonesData = null;
         let activeFilter = "all";
         let weeklyChartInstance = null;
         let donutChartInstance = null;
-
-        // Variable pour stocker les couches ajoutées (afin de pouvoir les supprimer)
         let mapOverlayGroup = null;
+        let isRefreshing = false;
 
-        function showToast(msg) {
+        // ============================================================
+        //  TOAST
+        // ============================================================
+        function showToast(msg, duration = 3000) {
             const toast = document.getElementById('toast');
             toast.textContent = msg;
             toast.classList.remove('opacity-0', 'translate-y-2');
             toast.classList.add('opacity-100', 'translate-y-0');
-            setTimeout(() => {
+            clearTimeout(toast._hideTimer);
+            toast._hideTimer = setTimeout(() => {
                 toast.classList.remove('opacity-100', 'translate-y-0');
                 toast.classList.add('opacity-0', 'translate-y-2');
-            }, 3000);
+            }, duration);
         }
 
-        // Thème
+        // ============================================================
+        //  THÈME
+        // ============================================================
         const themeBtn = document.getElementById('themeToggle');
+
         function setTheme(isDark) {
             if (isDark) {
                 document.documentElement.classList.add('dark');
@@ -262,7 +330,9 @@
         else setTheme(true);
         themeBtn.addEventListener('click', () => setTheme(!document.documentElement.classList.contains('dark')));
 
-        // DONNÉES DE DÉMONSTRATION
+        // ============================================================
+        //  DONNÉES DE DÉMONSTRATION (fallback)
+        // ============================================================
         function getDemoData() {
             return {
                 classification: {
@@ -271,9 +341,12 @@
                     count_modere: 13,
                     count_strong: 4,
                     earthquakes: [
-                        { time_utc: new Date().toISOString(), place: "Zone pacifique", mag: 4.2, mag_class: "Modéré", depth_km: 12, latitude: 35.68, longitude: 139.76, confiance: 88 },
-                        { time_utc: new Date(Date.now() - 3600000).toISOString(), place: "Côte Ouest USA", mag: 3.5, mag_class: "Faible", depth_km: 8, latitude: 38.9, longitude: -122.7, confiance: 92 },
-                        { time_utc: new Date(Date.now() - 7200000).toISOString(), place: "Japon", mag: 6.1, mag_class: "Strong", depth_km: 30, latitude: 36.2, longitude: 140.5, confiance: 78 }
+                        { time_utc: new Date().toISOString(), place: "Zone pacifique", mag: 4.2, mag_class: "Modéré",
+                            depth_km: 12, latitude: 35.68, longitude: 139.76, confiance: 88 },
+                        { time_utc: new Date(Date.now() - 3600000).toISOString(), place: "Côte Ouest USA", mag: 3.5,
+                            mag_class: "Faible", depth_km: 8, latitude: 38.9, longitude: -122.7, confiance: 92 },
+                        { time_utc: new Date(Date.now() - 7200000).toISOString(), place: "Japon", mag: 6.1,
+                            mag_class: "Strong", depth_km: 30, latitude: 36.2, longitude: 140.5, confiance: 78 }
                     ],
                     generated_at: new Date().toISOString()
                 },
@@ -304,10 +377,11 @@
             };
         }
 
-        // Mise à jour de la carte (supprime les anciennes couches superposées et ajoute les nouvelles)
+        // ============================================================
+        //  MISE À JOUR DE LA CARTE
+        // ============================================================
         function updateMapLayers() {
             if (!riskMap) return;
-            // Supprimer l'ancien groupe s'il existe
             if (mapOverlayGroup) {
                 riskMap.removeLayer(mapOverlayGroup);
             }
@@ -318,10 +392,10 @@
             const heatPoints = [];
             const markers = [];
 
-            // Ajout des cercles de risque (zones)
             zones.forEach(zone => {
                 if (zone.lat && zone.lon && !isNaN(zone.lat) && !isNaN(zone.lon)) {
-                    let color = zone.risk_level === 'eleve' ? '#f43f5e' : (zone.risk_level === 'modere' ? '#f59e0b' : '#10b981');
+                    let color = zone.risk_level === 'eleve' ? '#f43f5e' :
+                        (zone.risk_level === 'modere' ? '#f59e0b' : '#10b981');
                     let radius = Math.min(Math.max(zone.pred_seismes * 800, 20000), 200000);
                     heatPoints.push([zone.lat, zone.lon, Math.min(zone.pred_seismes / 100, 1)]);
                     markers.push([zone.lat, zone.lon]);
@@ -333,20 +407,20 @@
                         opacity: 0.4,
                         fillOpacity: 0.1
                     }).bindPopup(`
-                        <div class="text-xs p-1">
-                            <div class="font-bold mb-1" style="color:${color}">Zone ${zone.zone}</div>
-                            <div>Prédiction : <span class="font-mono">${zone.pred_seismes}</span> séismes</div>
-                            <div class="capitalize">Risque : ${zone.risk_level === 'eleve' ? 'Élevé' : (zone.risk_level === 'modere' ? 'Modéré' : 'Faible')}</div>
-                        </div>
-                    `);
+                            <div class="text-xs p-1">
+                                <div class="font-bold mb-1" style="color:${color}">Zone ${zone.zone}</div>
+                                <div>Prédiction : <span class="font-mono">${zone.pred_seismes}</span> séismes</div>
+                                <div class="capitalize">Risque : ${zone.risk_level === 'eleve' ? 'Élevé' : (zone.risk_level === 'modere' ? 'Modéré' : 'Faible')}</div>
+                            </div>
+                        `);
                     mapOverlayGroup.addLayer(circle);
                 }
             });
 
-            // Ajout des marqueurs d'événements
             earthquakes.slice(0, 200).forEach(eq => {
                 if (eq.latitude && eq.longitude && !isNaN(eq.latitude) && !isNaN(eq.longitude)) {
-                    let magColor = eq.mag_class === 'Strong' ? '#f43f5e' : (eq.mag_class === 'Modéré' ? '#f59e0b' : '#10b981');
+                    let magColor = eq.mag_class === 'Strong' ? '#f43f5e' :
+                        (eq.mag_class === 'Modéré' ? '#f59e0b' : '#10b981');
                     let radius = Math.min(7, 2.5 + (eq.mag || 3));
                     heatPoints.push([eq.latitude, eq.longitude, (eq.mag || 3) / 8]);
                     markers.push([eq.latitude, eq.longitude]);
@@ -357,16 +431,15 @@
                         weight: 1,
                         fillOpacity: 0.8
                     }).bindPopup(`
-                        <div class="text-xs p-1">
-                            <div class="font-bold">${eq.place || 'Séisme'}</div>
-                            <div>Mag: ${eq.mag} | Prof: ${eq.depth_km} km</div>
-                        </div>
-                    `);
+                            <div class="text-xs p-1">
+                                <div class="font-bold">${eq.place || 'Séisme'}</div>
+                                <div>Mag: ${eq.mag} | Prof: ${eq.depth_km} km</div>
+                            </div>
+                        `);
                     mapOverlayGroup.addLayer(marker);
                 }
             });
 
-            // Ajout de la couche de chaleur (heatmap) si existante
             if (heatPoints.length) {
                 const heat = L.heatLayer(heatPoints, {
                     radius: 25,
@@ -378,42 +451,47 @@
                 mapOverlayGroup.addLayer(heat);
             }
 
-            // Ajuster la vue pour englober tous les marqueurs/cercles
             if (markers.length) {
                 const bounds = L.latLngBounds(markers);
                 riskMap.fitBounds(bounds, { padding: [30, 30] });
             }
         }
 
+        // ============================================================
+        //  CHARGEMENT DES DONNÉES (avec cache-busting)
+        // ============================================================
         async function loadAllData() {
+            const cacheBuster = `_=${Date.now()}`;
             try {
                 let classifRes, forecastRes, zonesRes;
                 try {
                     [classifRes, forecastRes, zonesRes] = await Promise.all([
-                        fetch(`${API_BASE}/api/classification`).then(r => r.json()).catch(() => null),
-                        fetch(`${API_BASE}/api/forecast`).then(r => r.json()).catch(() => null),
-                        fetch(`${API_BASE}/api/zones`).then(r => r.json()).catch(() => null)
+                        fetch(`${API_BASE}/api/classification?${cacheBuster}`).then(r => r.json()).catch(() => null),
+                        fetch(`${API_BASE}/api/forecast?${cacheBuster}`).then(r => r.json()).catch(() => null),
+                        fetch(`${API_BASE}/api/zones?${cacheBuster}`).then(r => r.json()).catch(() => null)
                     ]);
-                } catch(e) { console.warn("API non disponible, utilisation des données de démonstration"); }
-                
+                } catch (e) {
+                    console.warn("API non disponible, utilisation des données de démonstration");
+                }
+
                 const demo = getDemoData();
                 classifData = classifRes || demo.classification;
                 forecastData = forecastRes || demo.forecast;
                 zonesData = zonesRes || demo.zones;
-                
-                // Mise à jour des KPI
+
+                // KPI
                 if (forecastData) {
                     const currentNb = forecastData.current_week?.nb_seismes ?? 536;
                     const predCentral = forecastData.prediction?.central ?? 501;
                     const low = forecastData.prediction?.low ?? 346;
                     const high = forecastData.prediction?.high ?? 561;
                     const startDate = forecastData.current_week?.start || "2026-06-15";
-                    
+
                     document.getElementById('kpi-current').textContent = currentNb.toLocaleString();
                     document.getElementById('current-week-range').textContent = startDate;
                     document.getElementById('kpi-pred').textContent = predCentral.toLocaleString();
                     document.getElementById('pred-interval').innerHTML = `IC 90% [${low}–${high}]`;
-                    
+
                     const ecart = predCentral - currentNb;
                     const ecartElem = document.getElementById('kpi-ecart');
                     const trendElem = document.getElementById('ecart-trend');
@@ -433,19 +511,22 @@
                         detailElem.textContent = "équilibre";
                     }
                 }
-                
+
                 renderZones();
                 renderTable();
-                updateHeaderTime();
+                updateHeaderTime(); // ← affiche l'heure actuelle
                 renderWeeklyChart();
                 renderClassificationDonut();
-                // Mettre à jour la carte avec les nouvelles données
                 updateMapLayers();
-                
-                showToast("Données chargées avec succès");
-            } catch(e) { 
-                console.error(e); 
-                showToast("Erreur de chargement, affichage des données de démonstration");
+
+                document.getElementById('api-status').textContent = 'En direct';
+                document.getElementById('api-status').className =
+                    'text-xs font-medium text-emerald-600 dark:text-emerald-400';
+
+                showToast("Données chargées avec succès", 2000);
+            } catch (e) {
+                console.error(e);
+                showToast("Erreur de chargement, affichage des données de démonstration", 3000);
                 const demo = getDemoData();
                 classifData = demo.classification;
                 forecastData = demo.forecast;
@@ -459,11 +540,18 @@
             }
         }
 
+        // ============================================================
+        //  RENDU : HEADER (timestamp)
+        // ============================================================
         function updateHeaderTime() {
-            const d = classifData?.generated_at ? new Date(classifData.generated_at) : new Date();
-            document.getElementById('last-update-txt').innerHTML = `MAJ : ${d.toLocaleTimeString('fr-FR')}`;
+            // On affiche toujours l'heure actuelle (moment du rechargement)
+            const now = new Date();
+            document.getElementById('last-update-txt').innerHTML = `MAJ : ${now.toLocaleTimeString('fr-FR')}`;
         }
 
+        // ============================================================
+        //  RENDU : ZONES
+        // ============================================================
         function renderZones() {
             if (!zonesData?.zones) return;
             const zones = zonesData.zones;
@@ -472,63 +560,72 @@
                 let colorClass = 'bg-emerald-500';
                 let bgPill = 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20';
                 let label = 'Faible';
-                if(z.risk_level === 'eleve') {
+                if (z.risk_level === 'eleve') {
                     colorClass = 'bg-rose-500';
                     bgPill = 'bg-rose-500/10 text-rose-500 border-rose-500/20';
                     label = 'Élevé';
-                } else if(z.risk_level === 'modere') {
+                } else if (z.risk_level === 'modere') {
                     colorClass = 'bg-amber-500';
                     bgPill = 'bg-amber-500/10 text-amber-500 border-amber-500/20';
                     label = 'Modéré';
                 }
                 return `
-                    <div class="border border-zinc-100 dark:border-zinc-800/60 bg-zinc-50/30 dark:bg-cardbg/20 rounded-md p-3 flex flex-col justify-between hover:border-zinc-300 dark:hover:border-zinc-700 transition-all duration-200">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <span class="text-xs font-semibold block text-zinc-700 dark:text-zinc-300">Zone ${z.zone}</span>
-                                ${z.lat && z.lon ? `<span class="text-[10px] font-mono text-zinc-400">${z.lat.toFixed(1)}°, ${z.lon.toFixed(1)}°</span>` : ''}
+                        <div class="border border-zinc-100 dark:border-zinc-800/60 bg-zinc-50/30 dark:bg-cardbg/20 rounded-md p-3 flex flex-col justify-between hover:border-zinc-300 dark:hover:border-zinc-700 transition-all duration-200">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <span class="text-xs font-semibold block text-zinc-700 dark:text-zinc-300">Zone ${z.zone}</span>
+                                    ${z.lat && z.lon ? `<span class="text-[10px] font-mono text-zinc-400">${z.lat.toFixed(1)}°, ${z.lon.toFixed(1)}°</span>` : ''}
+                                </div>
+                                <span class="text-xs font-bold font-mono text-zinc-800 dark:text-zinc-100">${z.pred_seismes} <span class="text-[10px] font-normal text-zinc-400">evt</span></span>
                             </div>
-                            <span class="text-xs font-bold font-mono text-zinc-800 dark:text-zinc-100">${z.pred_seismes} <span class="text-[10px] font-normal text-zinc-400">evt</span></span>
-                        </div>
-                        <div class="mt-2 flex items-center justify-between gap-4">
-                            <div class="h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full flex-1 overflow-hidden">
-                                <div class="h-full ${colorClass}" style="width: ${(z.pred_seismes/maxSeism)*100}%"></div>
+                            <div class="mt-2 flex items-center justify-between gap-4">
+                                <div class="h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full flex-1 overflow-hidden">
+                                    <div class="h-full ${colorClass}" style="width: ${(z.pred_seismes/maxSeism)*100}%"></div>
+                                </div>
+                                <span class="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 border rounded ${bgPill}">${label}</span>
                             </div>
-                            <span class="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 border rounded ${bgPill}">${label}</span>
                         </div>
-                    </div>
-                `;
+                    `;
             }).join('');
-            document.getElementById('zonesPremium').innerHTML = html || '<div class="text-center text-zinc-500 col-span-2 text-xs py-4">Aucune zone active</div>';
+            document.getElementById('zonesPremium').innerHTML = html ||
+                '<div class="text-center text-zinc-500 col-span-2 text-xs py-4">Aucune zone active</div>';
         }
 
+        // ============================================================
+        //  RENDU : TABLEAU DES ÉVÉNEMENTS
+        // ============================================================
         function renderTable() {
-            if(!classifData?.earthquakes) return;
-            let filtered = activeFilter === 'all' ? classifData.earthquakes : classifData.earthquakes.filter(e => e.mag_class === activeFilter);
+            if (!classifData?.earthquakes) return;
+            let filtered = activeFilter === 'all' ? classifData.earthquakes : classifData.earthquakes.filter(e => e
+                .mag_class === activeFilter);
             if (filtered.length === 0) {
-                document.getElementById('tablePremiumContainer').innerHTML = '<div class="text-center text-zinc-500 p-4 text-xs">Aucun événement trouvé</div>';
+                document.getElementById('tablePremiumContainer').innerHTML =
+                    '<div class="text-center text-zinc-500 p-4 text-xs">Aucun événement trouvé</div>';
                 return;
             }
             const html = filtered.slice(0, 20).map(eq => {
                 let badgeStyle = 'text-emerald-500 bg-emerald-500/10 border-emerald-500/20';
-                if(eq.mag_class === 'Strong') badgeStyle = 'text-rose-500 bg-rose-500/10 border-rose-500/20';
-                if(eq.mag_class === 'Modéré') badgeStyle = 'text-amber-500 bg-amber-500/10 border-amber-500/20';
+                if (eq.mag_class === 'Strong') badgeStyle = 'text-rose-500 bg-rose-500/10 border-rose-500/20';
+                if (eq.mag_class === 'Modéré') badgeStyle = 'text-amber-500 bg-amber-500/10 border-amber-500/20';
                 return `
-                    <div class="flex items-center justify-between p-2.5 border rounded border-zinc-100 dark:border-zinc-800/40 bg-zinc-50/20 dark:bg-cardbg/10 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/30 transition-colors">
-                        <div class="flex-1 min-w-0 pr-3">
-                            <div class="text-[10px] font-mono text-zinc-400">${new Date(eq.time_utc).toLocaleString('fr-FR').slice(0,16)}</div>
-                            <div class="text-xs font-medium text-zinc-700 dark:text-zinc-300 truncate mt-0.5">${eq.place || 'Lieu inconnu'}</div>
+                        <div class="flex items-center justify-between p-2.5 border rounded border-zinc-100 dark:border-zinc-800/40 bg-zinc-50/20 dark:bg-cardbg/10 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/30 transition-colors">
+                            <div class="flex-1 min-w-0 pr-3">
+                                <div class="text-[10px] font-mono text-zinc-400">${new Date(eq.time_utc).toLocaleString('fr-FR').slice(0,16)}</div>
+                                <div class="text-xs font-medium text-zinc-700 dark:text-zinc-300 truncate mt-0.5">${eq.place || 'Lieu inconnu'}</div>
+                            </div>
+                            <div class="flex items-center gap-3 shrink-0">
+                                <span class="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 border rounded ${badgeStyle}">${eq.mag_class}</span>
+                                <div class="font-bold font-mono text-sm text-zinc-800 dark:text-zinc-100 w-8 text-right">${eq.mag?.toFixed(1)}</div>
+                            </div>
                         </div>
-                        <div class="flex items-center gap-3 shrink-0">
-                            <span class="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 border rounded ${badgeStyle}">${eq.mag_class}</span>
-                            <div class="font-bold font-mono text-sm text-zinc-800 dark:text-zinc-100 w-8 text-right">${eq.mag?.toFixed(1)}</div>
-                        </div>
-                    </div>
-                `;
+                    `;
             }).join('');
             document.getElementById('tablePremiumContainer').innerHTML = html;
         }
 
+        // ============================================================
+        //  RENDU : GRAPHIQUE HEBDOMADAIRE
+        // ============================================================
         function renderWeeklyChart() {
             const canvas = document.getElementById('weeklyChart');
             if (!canvas) return;
@@ -562,9 +659,10 @@
                         borderColor: '#f43f5e',
                         backgroundColor: 'rgba(244, 63, 94, 0.1)',
                         borderWidth: 2.5,
-                        pointBackgroundColor: (ctx) => ctx.dataIndex === extendedValues.length-1 ? '#f59e0b' : '#3b82f6',
+                        pointBackgroundColor: (ctx) => ctx.dataIndex === extendedValues.length - 1 ? '#f59e0b' :
+                            '#3b82f6',
                         pointBorderColor: 'transparent',
-                        pointRadius: (ctx) => ctx.dataIndex === extendedValues.length-1 ? 6 : 3,
+                        pointRadius: (ctx) => ctx.dataIndex === extendedValues.length - 1 ? 6 : 3,
                         tension: 0.25,
                         fill: true
                     }]
@@ -572,15 +670,22 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: true,
-                    plugins: { legend: { labels: { color: textColor, font: { size: 9 } } }, tooltip: { bodyColor: textColor, titleColor: textColor } },
+                    plugins: {
+                        legend: { labels: { color: textColor, font: { size: 9 } } },
+                        tooltip: { bodyColor: textColor, titleColor: textColor }
+                    },
                     scales: {
                         y: { grid: { color: gridColor }, ticks: { color: textColor, font: { size: 9 } } },
-                        x: { ticks: { color: textColor, font: { size: 8 }, rotation: 25, maxRotation: 35 }, grid: { display: false } }
+                        x: { ticks: { color: textColor, font: { size: 8 }, rotation: 25, maxRotation: 35 },
+                            grid: { display: false } }
                     }
                 }
             });
         }
 
+        // ============================================================
+        //  RENDU : DONUT DE CLASSIFICATION
+        // ============================================================
         function renderClassificationDonut() {
             if (!classifData) return;
             const faible = classifData.count_faible || 0;
@@ -615,12 +720,23 @@
                     maintainAspectRatio: true,
                     plugins: {
                         legend: { display: false },
-                        tooltip: { callbacks: { label: (tooltipItem) => { const val = tooltipItem.raw; const percent = ((val / total) * 100).toFixed(1); return `${tooltipItem.label}: ${val} événements (${percent}%)`; } } }
+                        tooltip: {
+                            callbacks: {
+                                label: (tooltipItem) => {
+                                    const val = tooltipItem.raw;
+                                    const percent = ((val / total) * 100).toFixed(1);
+                                    return `${tooltipItem.label}: ${val} événements (${percent}%)`;
+                                }
+                            }
+                        }
                     }
                 }
             });
         }
 
+        // ============================================================
+        //  MISE À JOUR DES COULEURS DES GRAPHIQUES (thème)
+        // ============================================================
         function updateChartColors() {
             if (weeklyChartInstance) {
                 const isDark = document.documentElement.classList.contains('dark');
@@ -635,6 +751,9 @@
             if (donutChartInstance) donutChartInstance.update();
         }
 
+        // ============================================================
+        //  FILTRES DU TABLEAU
+        // ============================================================
         function initFilters() {
             document.querySelectorAll('[data-filter]').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -646,41 +765,168 @@
             });
         }
 
+        // ============================================================
+        //  REFRESH PIPELINE - avec polling
+        // ============================================================
         async function refreshPipeline() {
+            if (isRefreshing) return;
+            isRefreshing = true;
+
             const btn = document.getElementById('refreshBtn');
-            btn.disabled = true;
-            btn.innerHTML = `<svg class="w-3 h-3 animate-spin mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/></svg> Pipeline...`;
-            showToast("Calcul du pipeline IA en cours...");
+            const icon = document.getElementById('refreshIcon');
+            const label = document.getElementById('refreshLabel');
+            const originalIcon = icon?.innerHTML || '';
+            const originalLabel = label?.textContent || 'Actualiser';
+
+            if (btn) {
+                btn.disabled = true;
+                btn.classList.add('btn-loading');
+            }
+            if (icon) {
+                icon.innerHTML = `
+                    <circle class="spinner" cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 2a10 10 0 0 1 10 10" fill="none" stroke="currentColor" stroke-width="2"/>
+                `;
+            }
+            if (label) label.textContent = 'Pipeline...';
+
+            const statusEl = document.getElementById('api-status');
+            if (statusEl) {
+                statusEl.textContent = 'Traitement...';
+                statusEl.className = 'text-xs font-medium text-amber-500 dark:text-amber-400';
+            }
+            showToast("🔄 Lancement du pipeline IA...", 5000);
+
             try {
-                await fetch(`${API_BASE}/api/refresh`, { method: 'POST' }).catch(() => {});
-                setTimeout(async () => {
-                    await loadAllData();
+                // 1. Déclencher le pipeline
+                const resp = await fetch(`${API_BASE}/api/refresh?_=${Date.now()}`, {
+                    method: 'POST',
+                    headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
+                });
+                if (!resp.ok) {
+                    throw new Error(`Erreur HTTP ${resp.status}`);
+                }
+                const result = await resp.json();
+                console.log('Pipeline started:', result);
+
+                // 2. Attendre la fin du pipeline (polling toutes les 2 secondes, max 30)
+                let attempts = 0;
+                const maxAttempts = 30;
+                let finished = false;
+                let finalStatus = '';
+
+                while (attempts < maxAttempts && !finished) {
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    attempts++;
+
+                    const statusResp = await fetch(`${API_BASE}/api/status?_=${Date.now()}`);
+                    if (!statusResp.ok) continue;
+
+                    const statusData = await statusResp.json();
+                    const pipelineStatus = statusData.pipeline_status?.status || '';
+
+                    if (['success', 'error', 'timeout', 'exception'].includes(pipelineStatus)) {
+                        finished = true;
+                        finalStatus = pipelineStatus;
+                        break;
+                    }
+                    showToast(`⏳ Pipeline en cours... (${attempts}/${maxAttempts})`, 2000);
+                }
+
+                // 3. Recharger les données
+                await loadAllData(); // ← ici updateHeaderTime sera appelée
+
+                // 4. Afficher le résultat
+                if (finished) {
+                    if (finalStatus === 'success') {
+                        showToast("✅ Pipeline terminé, données mises à jour", 3000);
+                        if (statusEl) {
+                            statusEl.textContent = 'En direct';
+                            statusEl.className = 'text-xs font-medium text-emerald-600 dark:text-emerald-400';
+                        }
+                    } else {
+                        showToast(`⚠️ Pipeline terminé avec statut : ${finalStatus}`, 4000);
+                        if (statusEl) {
+                            statusEl.textContent = `⚠️ ${finalStatus}`;
+                            statusEl.className = 'text-xs font-medium text-rose-500 dark:text-rose-400';
+                        }
+                    }
+                } else {
+                    showToast("⏱️ Pipeline trop long, données rechargées", 4000);
+                    if (statusEl) {
+                        statusEl.textContent = '⏱️ Timeout';
+                        statusEl.className = 'text-xs font-medium text-amber-500 dark:text-amber-400';
+                    }
+                }
+
+            } catch (error) {
+                console.error('❌ Refresh error:', error);
+                showToast(`⚠️ Erreur: ${error.message || 'échec du pipeline'}`, 4000);
+                await loadAllData(); // on recharge quand même
+                if (statusEl) {
+                    statusEl.textContent = '⚠️ Erreur';
+                    statusEl.className = 'text-xs font-medium text-rose-500 dark:text-rose-400';
+                }
+            } finally {
+                if (btn) {
                     btn.disabled = false;
-                    btn.innerHTML = '<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg> Actualiser';
-                    showToast("Données synchronisées");
-                }, 25000);
-            } catch(e) {
-                btn.disabled = false;
-                btn.innerHTML = '<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg> Actualiser';
-                showToast("Erreur de synchronisation, utilisation des données locales");
-                loadAllData();
+                    btn.classList.remove('btn-loading');
+                }
+                if (icon) icon.innerHTML = originalIcon;
+                if (label) label.textContent = originalLabel;
+                isRefreshing = false;
             }
         }
 
-        // Initialisation de la carte (fond uniquement)
+        // ============================================================
+        //  INITIALISATION DE LA CARTE
+        // ============================================================
         function initBaseMap() {
-            const tileUrl = document.documentElement.classList.contains('dark')
-                ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-                : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+            const tileUrl = document.documentElement.classList.contains('dark') ?
+                'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png' :
+                'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
             riskMap = L.map('riskMap', { zoomControl: false }).setView([20, 0], 1.5);
             L.control.zoom({ position: 'bottomright' }).addTo(riskMap);
             L.tileLayer(tileUrl, { attribution: '© OpenStreetMap', subdomains: 'abcd', maxZoom: 19 }).addTo(riskMap);
         }
 
-        // Lancer l'application
-        initBaseMap();
-        loadAllData().then(() => { initFilters(); });
-        setInterval(loadAllData, 10 * 60 * 1000);
+        // ============================================================
+        //  LANCEMENT DE L'APPLICATION
+        // ============================================================
+        function boot() {
+            initBaseMap();
+
+            const refreshBtn = document.getElementById('refreshBtn');
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', refreshPipeline);
+                console.log('✅ Refresh button bound');
+            } else {
+                console.warn('⚠️ refreshBtn not found');
+            }
+
+            loadAllData().then(() => {
+                initFilters();
+                setInterval(() => {
+                    if (!isRefreshing) refreshPipeline();
+                }, 10 * 60 * 1000);
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if ((e.key === 'r' || e.key === 'R') && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                    const active = document.activeElement;
+                    if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active
+                            .isContentEditable)) return;
+                    e.preventDefault();
+                    refreshPipeline();
+                }
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', boot);
+        } else {
+            boot();
+        }
     </script>
 </body>
 </html>

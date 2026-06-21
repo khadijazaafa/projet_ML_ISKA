@@ -15,7 +15,6 @@ import json
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-# ── CHEMINS ───────────────────────────────────────────────────
 BASE_DIR = Path(__file__).parent.parent
 KMEANS_PATH = BASE_DIR / "models" / "kmeans_zones.pkl"
 SCALER_PATH = BASE_DIR / "models" / "scaler_geo.pkl"
@@ -23,7 +22,6 @@ ZONE_HIST_CSV = BASE_DIR / "data" / "zone_history.csv"
 OUTPUT = BASE_DIR / "data" / "output_zones.json"
 
 FEATURES_ZONE = ["lag_1", "lag_2", "lag_3", "lag_4", "rolling_mean_4", "rolling_mean_8"]
-
 
 def run():
     print("=" * 55)
@@ -84,6 +82,18 @@ def run():
 
     if len(df_week) == 0:
         print("   ⚠️ Aucun séisme")
+        # On ne sauvegarde pas vide, on garde l'ancienne prédiction ? Ou on sauvegarde vide.
+        # Ici on va sauvegarder vide mais avec le timestamp.
+        output = {
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "next_week_start": str((datetime.now(timezone.utc) + timedelta(days=7)).date()),
+            "nb_zones": 0,
+            "zones": [],
+        }
+        OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+        with open(OUTPUT, "w", encoding="utf-8") as f:
+            json.dump(output, f, ensure_ascii=False, indent=2)
+        print("💾 Sauvegardé (vide)")
         return
 
     # Assigner les zones
@@ -93,7 +103,10 @@ def run():
     # Agrégation
     week_start = pd.Timestamp(end_time.date()) - pd.Timedelta(days=end_time.weekday())
     
+    # ✅ Calcul des coordonnées moyennes pour chaque zone
     zone_agg = df_week.groupby("zone").size().reset_index(name="nb_seismes")
+    zone_coords = df_week.groupby("zone")[["latitude", "longitude"]].mean().reset_index()
+    zone_agg = zone_agg.merge(zone_coords, on="zone")
     zone_agg["date"] = week_start
 
     # Mettre à jour l'historique
@@ -101,7 +114,7 @@ def run():
     zone_hist = pd.concat([zone_hist, zone_agg], ignore_index=True)
     zone_hist = zone_hist.sort_values(["zone", "date"]).reset_index(drop=True)
 
-    # Calculer les features (pour usage futur, mais pas utilisé pour prédire)
+    # Calculer les features (pour usage futur)
     for lag in [1, 2, 3, 4]:
         zone_hist[f"lag_{lag}"] = zone_hist.groupby("zone")["nb_seismes"].shift(lag)
 
@@ -111,15 +124,20 @@ def run():
     zone_hist.to_csv(ZONE_HIST_CSV, index=False)
     print(f"\n💾 Historique mis à jour")
 
-    # Prédictions par zone (utilisation de la dernière valeur observée comme prédiction)
-    last_per_zone = zone_hist.dropna().sort_values("date").groupby("zone").tail(1).reset_index(drop=True)
+    # ✅ PRÉDICTION : On enlève le dropna() pour ne pas perdre les zones qui ont seulement 1 semaine d'historique
+    last_per_zone = zone_hist.sort_values("date").groupby("zone").tail(1).reset_index(drop=True)
     
     results = []
     for _, row in last_per_zone.iterrows():
         zone_id = int(row["zone"])
-        # Prédiction simple : dernière valeur observée (fallback)
+        # Utiliser nb_seismes comme prédiction si les lags sont vides
         pred = int(row.get("nb_seismes", 0))
-        results.append({"zone": zone_id, "pred_seismes": pred})
+        results.append({
+            "zone": zone_id, 
+            "pred_seismes": pred,
+            "latitude": float(row["latitude"]),
+            "longitude": float(row["longitude"])
+        })
 
     results_df = pd.DataFrame(results)
     
@@ -147,8 +165,8 @@ def run():
             "zone": int(row["zone"]),
             "pred_seismes": int(row["pred_seismes"]),
             "risk_level": row["risk_level"],
-            "lat": None,
-            "lon": None,
+            "lat": float(row["latitude"]),   # ✅ Maintenant rempli
+            "lon": float(row["longitude"]),  # ✅ Maintenant rempli
         })
 
     output = {
@@ -164,7 +182,6 @@ def run():
 
     print(f"\n💾 Sauvegardé → {OUTPUT}")
     print("=" * 55)
-
 
 if __name__ == "__main__":
     run()

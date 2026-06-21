@@ -140,6 +140,8 @@ def run():
 
     new_df = pd.DataFrame([new_row])
     weekly = pd.concat([weekly, new_df], ignore_index=True)
+    if 'date' in weekly.columns:
+        weekly['date'] = pd.to_datetime(weekly['date'])
     weekly = weekly.sort_values("date").reset_index(drop=True)
 
     # Recalcul des features sur tout l'historique

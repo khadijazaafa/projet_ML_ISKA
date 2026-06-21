@@ -1,32 +1,66 @@
 {
-  "generated_at": "2026-06-15T16:14:16.613337+00:00",
-  "next_week_start": "2026-06-22",
+  "generated_at": "2026-06-21T15:58:18.947245+00:00",
+  "next_week_start": "2026-06-28",
   "model_used": "model_xgb_global.pkl",
   "prediction": {
-    "central": 501,
-    "low": 346,
-    "high": 561
+    "central": 542,
+    "low": 348,
+    "high": 767
   },
   "current_week": {
-    "start": "2026-06-15",
-    "nb_seismes": 536,
-    "mag_max": 6.2,
-    "nb_zones": 501
+    "start": "2026-06-21",
+    "nb_seismes": 637,
+    "mag_max": 6.7,
+    "nb_zones": 566
   },
   "history_12w": [
-    {"date": "2026-03-23", "nb_seismes": 360},
-    {"date": "2026-03-30", "nb_seismes": 292},
-    {"date": "2026-04-06", "nb_seismes": 492},
-    {"date": "2026-04-13", "nb_seismes": 295},
-    {"date": "2026-04-20", "nb_seismes": 329},
-    {"date": "2026-04-27", "nb_seismes": 296},
-    {"date": "2026-05-04", "nb_seismes": 212},
-    {"date": "2026-05-11", "nb_seismes": 214},
-    {"date": "2026-05-18", "nb_seismes": 163},
-    {"date": "2026-05-25", "nb_seismes": 85},
-    {"date": "2026-06-01", "nb_seismes": 504},
-    {"date": "2026-06-08", "nb_seismes": 553},
-    {"date": "2026-06-15", "nb_seismes": 536}
-]
-
+    {
+      "date": "2026-04-13",
+      "nb_seismes": 295
+    },
+    {
+      "date": "2026-04-20",
+      "nb_seismes": 329
+    },
+    {
+      "date": "2026-04-27",
+      "nb_seismes": 296
+    },
+    {
+      "date": "2026-05-04",
+      "nb_seismes": 212
+    },
+    {
+      "date": "2026-05-11",
+      "nb_seismes": 214
+    },
+    {
+      "date": "2026-05-18",
+      "nb_seismes": 163
+    },
+    {
+      "date": "2026-05-25",
+      "nb_seismes": 85
+    },
+    {
+      "date": "2026-06-01",
+      "nb_seismes": 504
+    },
+    {
+      "date": "2026-06-08",
+      "nb_seismes": 553
+    },
+    {
+      "date": "2026-06-09",
+      "nb_seismes": 599
+    },
+    {
+      "date": "2026-06-15",
+      "nb_seismes": 536
+    },
+    {
+      "date": "2026-06-21",
+      "nb_seismes": 637
+    }
+  ]
 }
