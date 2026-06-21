@@ -1,7 +1,4 @@
-Parfait ! Voici le **README complet** avec l'intégration de `img1` et `img2` pour illustrer votre 
----
 
-```markdown
 # 🌍 Plateforme Intelligente de Surveillance et de Prévision Sismique
 
 ---
