@@ -152,17 +152,20 @@ PROJET_VF
 
 ## Résultats obtenus
 
-| Modèle | Métrique | Score |
-|--------|----------|-------|
-| **Classification (RF)** | Accuracy | 99.7 % |
-| **Classification (RF)** | F1-Macro | 0.989 |
-| **Prévision (XGBoost)** | MAE | 28.6 |
-| **Prévision (XGBoost)** | MAPE | 11.36 % |
-| **Prévision (XGBoost)** | R² | 0.78 |
+### Classification
 
----
+* Accuracy : 99.7 %
+* F1-Macro : 0.989
 
-## Installation et lancement
+### Prévision temporelle
+
+* MAE : 28.6
+* MAPE : 11.36 %
+* R² : 0.78
+
+
+
+# Installation et lancement
 
 ### 1. Cloner le projet
 
@@ -218,43 +221,10 @@ data/output_forecast.json
 data/output_zones.json
 ```
 
----
 
-## Auteurs et encadrement
 
-| Rôle | Nom |
-|------|-----|
-| **Étudiants** | ZAAFA Khadija & Aldeibes Ghanem Israa |
-| **Encadrante** | Oumaima Guendoul |
-| **Demandeur** | Elhabib Benlhmar |
 
 ---
 
-**Merci pour votre attention !** 🙏
-```
 
----
-
-## 📌 Instructions pour les images
-
-1. Prenez **deux captures d'écran** de votre dashboard :
-   - `img1.png` : Vue générale (KPI, graphiques, tableau).
-   - `img2.png` : Carte interactive (Leaflet avec les zones).
-
-2. **Placez-les** soit :
-   - À la racine du projet (à côté de `README.md`), **OU**
-   - Dans un dossier `screenshots/` (comme indiqué dans l'arborescence).
-
-3. Si vous utilisez un dossier `screenshots/`, remplacez dans le code :
-   ```markdown
-   ![Vue générale](img1.png)  →  ![Vue générale](screenshots/img1.png)
-   ```
-
-4. **Commit et push** :
-   ```bash
-   git add screenshots/ README.md
-   git commit -m "Ajout des captures d'écran et mise à jour du README"
-   git push
-   ```
-
-Et voilà, votre README est complet et professionnel ! 🚀
+Earthquake Monitoring and Forecasting using Machine Learning.
