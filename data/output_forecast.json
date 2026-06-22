@@ -1,23 +1,19 @@
 {
-  "generated_at": "2026-06-21T15:58:18.947245+00:00",
-  "next_week_start": "2026-06-28",
+  "generated_at": "2026-06-22T10:37:10.428826+00:00",
+  "next_week_start": "2026-07-05",
   "model_used": "model_xgb_global.pkl",
   "prediction": {
-    "central": 542,
-    "low": 348,
-    "high": 767
+    "central": 410,
+    "low": 233,
+    "high": 484
   },
   "current_week": {
-    "start": "2026-06-21",
-    "nb_seismes": 637,
-    "mag_max": 6.7,
-    "nb_zones": 566
+    "start": "2026-06-28",
+    "nb_seismes": 32,
+    "mag_max": 4.9,
+    "nb_zones": 31
   },
   "history_12w": [
-    {
-      "date": "2026-04-13",
-      "nb_seismes": 295
-    },
     {
       "date": "2026-04-20",
       "nb_seismes": 329
@@ -60,7 +56,11 @@
     },
     {
       "date": "2026-06-21",
-      "nb_seismes": 637
+      "nb_seismes": 646
+    },
+    {
+      "date": "2026-06-28",
+      "nb_seismes": 32
     }
   ]
 }

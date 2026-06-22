@@ -1,77 +1,77 @@
 {
-  "generated_at": "2026-06-21T15:58:21.713455+00:00",
-  "next_week_start": "2026-06-22",
+  "generated_at": "2026-06-22T10:37:12.721972+00:00",
+  "next_week_start": "2026-06-29",
   "nb_zones": 10,
   "zones": [
     {
       "zone": 4,
-      "pred_seismes": 395,
+      "pred_seismes": 357,
       "risk_level": "eleve",
-      "lat": 51.73240497791589,
-      "lon": -147.99746825479627
+      "lat": 51.31552296684179,
+      "lon": -147.95606346613351
     },
     {
       "zone": 6,
-      "pred_seismes": 130,
+      "pred_seismes": 125,
       "risk_level": "eleve",
-      "lat": 19.604180228083685,
-      "lon": -102.40773081311346
+      "lat": 19.498140759920243,
+      "lon": -104.60026149680988
     },
     {
       "zone": 7,
-      "pred_seismes": 53,
+      "pred_seismes": 56,
       "risk_level": "eleve",
-      "lat": 49.59647735849057,
-      "lon": 164.9676603773585
+      "lat": 49.871112499999995,
+      "lon": 164.3787714285714
     },
     {
       "zone": 3,
-      "pred_seismes": 40,
+      "pred_seismes": 43,
       "risk_level": "eleve",
-      "lat": -0.07692999999999998,
-      "lon": 125.35435
+      "lat": 0.3391209302325581,
+      "lon": 126.36387674418606
     },
     {
       "zone": 8,
-      "pred_seismes": 18,
+      "pred_seismes": 19,
       "risk_level": "modere",
-      "lat": 37.010038888888886,
-      "lon": 75.01111111111112
+      "lat": 37.78123157894737,
+      "lon": 73.28791052631578
     },
     {
       "zone": 2,
-      "pred_seismes": 15,
+      "pred_seismes": 14,
       "risk_level": "modere",
-      "lat": -24.482086666666667,
-      "lon": -66.5428
-    },
-    {
-      "zone": 1,
-      "pred_seismes": 11,
-      "risk_level": "modere",
-      "lat": 26.86598181818182,
-      "lon": 125.55578181818181
+      "lat": -23.866271428571427,
+      "lon": -66.27487857142857
     },
     {
       "zone": 5,
-      "pred_seismes": 8,
+      "pred_seismes": 10,
+      "risk_level": "modere",
+      "lat": -22.294220000000003,
+      "lon": -177.07986
+    },
+    {
+      "zone": 1,
+      "pred_seismes": 9,
       "risk_level": "faible",
-      "lat": -19.9896625,
-      "lon": -177.15885
+      "lat": 27.189666666666668,
+      "lon": 126.7923
     },
     {
       "zone": 9,
-      "pred_seismes": 6,
+      "pred_seismes": 7,
       "risk_level": "faible",
-      "lat": -31.784916666666664,
-      "lon": 168.29081666666667
+      "lat": -29.568914285714282,
+      "lon": 168.24677142857144
     },
     {
       "zone": 0,
-      "pred_seismes": 5,
+      "pred_seismes": 6,
       "risk_level": "faible",
-      "lat": -56.865840000000006,
-      "lon": -26.20016
+      "lat": -57.42511666666667,
+      "lon": -32.23373333333333
     }
   ]
 }
