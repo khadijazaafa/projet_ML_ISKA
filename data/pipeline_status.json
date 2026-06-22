@@ -1,11 +1,5 @@
 {
-<<<<<<< Updated upstream
-  "last_run": "2026-06-22T10:37:13.503746+00:00",
-  "status": "timeout",
-  "message": "Pipeline execution exceeded 10 minutes"
-=======
-  "last_run": "2026-06-22T12:28:23.679716+00:00",
-  "status": "success",
-  "message": "Pipeline completed successfully"
->>>>>>> Stashed changes
+  "last_run": "2026-06-22T12:38:22.984629+00:00",
+  "status": "error",
+  "message": "C:\\Users\\lenovo\\AppData\\Roaming\\Python\\Python314\\site-packages\\sklearn\\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator NearestNeighbors from version 1.4.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:\nhttps://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations\n  warnings.warn(\nC:\\Users\\lenovo\\AppData\\Roaming\\Python\\Python314\\site-packages\\sklearn\\base.py:463"
 }

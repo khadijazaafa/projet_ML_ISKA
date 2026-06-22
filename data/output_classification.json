@@ -1,25 +1,14 @@
 {
-<<<<<<< Updated upstream
-  "generated_at": "2026-06-22T10:37:08.911989+00:00",
-  "period_start": "2026-06-21T10:37:06.413900+00:00",
-  "period_end": "2026-06-22T10:37:06.413900+00:00",
-  "total": 64,
-  "count_faible": 44,
-  "count_modere": 20,
-=======
-  "generated_at": "2026-06-22T12:28:16.288429+00:00",
-  "period_start": "2026-06-21T12:28:13.662432+00:00",
-  "period_end": "2026-06-22T12:28:13.662432+00:00",
+  "generated_at": "2026-06-22T12:38:17.189633+00:00",
+  "period_start": "2026-06-21T12:38:14.766027+00:00",
+  "period_end": "2026-06-22T12:38:14.766027+00:00",
   "total": 66,
   "count_faible": 44,
   "count_modere": 22,
->>>>>>> Stashed changes
   "count_strong": 0,
   "model_used": "rf_pipeline.pkl",
   "earthquakes": [
     {
-<<<<<<< Updated upstream
-=======
       "id": "us7000sv6r",
       "time_utc": "2026-06-22 11:07:30.794000+00:00",
       "place": "36 km WSW of Balaklava, Ukraine",
@@ -140,7 +129,6 @@
       "confiance": 83.2
     },
     {
->>>>>>> Stashed changes
       "id": "us7000sv6a",
       "time_utc": "2026-06-22 09:43:52.220000+00:00",
       "place": "125 km SSE of Kuril’sk, Russia",
@@ -1002,7 +990,6 @@
       "mag": 3.0,
       "latitude": 52.452,
       "longitude": -170.861,
-<<<<<<< Updated upstream
       "depth_km": 10.0,
       "emoji": "🟢",
       "mag_class": "Faible",
@@ -1010,105 +997,6 @@
       "prob_Modere": 0.4,
       "prob_Strong": 0.0,
       "confiance": 99.5
-    },
-    {
-      "id": "us7000suzh",
-      "time_utc": "2026-06-21 12:12:57.347000+00:00",
-      "place": "168 km ESE of Petropavlovsk-Kamchatsky, Russia",
-      "mag": 4.3,
-      "latitude": 52.5974,
-      "longitude": 160.9985,
-      "depth_km": 10.0,
-      "emoji": "🟡",
-      "mag_class": "Modéré",
-      "prob_Faible": 2.8,
-      "prob_Modere": 96.0,
-      "prob_Strong": 1.2,
-      "confiance": 96.0
-    },
-    {
-      "id": "aka2026metxya",
-      "time_utc": "2026-06-21 12:05:06.421000+00:00",
-      "place": "15 km N of Cantwell, Alaska",
-      "mag": 2.6,
-      "latitude": 63.528,
-      "longitude": -148.987,
-      "depth_km": 0.0,
-      "emoji": "🟢",
-      "mag_class": "Faible",
-      "prob_Faible": 99.2,
-      "prob_Modere": 0.8,
-      "prob_Strong": 0.0,
-      "confiance": 99.2
-    },
-    {
-      "id": "hv74987757",
-      "time_utc": "2026-06-21 11:44:45.250000+00:00",
-      "place": "16 km NNE of Pāhala, Hawaii",
-      "mag": 2.03,
-      "latitude": 19.3463325500488,
-      "longitude": -155.425003051758,
-      "depth_km": 6.69999980926514,
-      "emoji": "🟢",
-      "mag_class": "Faible",
-      "prob_Faible": 99.7,
-      "prob_Modere": 0.2,
-      "prob_Strong": 0.0,
-      "confiance": 99.7
-    },
-    {
-      "id": "pr2026172002",
-      "time_utc": "2026-06-21 11:10:45.380000+00:00",
-      "place": "102 km NNE of Cruz Bay, U.S. Virgin Islands",
-      "mag": 3.8,
-      "latitude": 19.118,
-      "longitude": -64.2733,
-      "depth_km": 11.0,
-      "emoji": "🟢",
-      "mag_class": "Faible",
-      "prob_Faible": 99.5,
-      "prob_Modere": 0.5,
-      "prob_Strong": 0.0,
-      "confiance": 99.5
-    },
-    {
-      "id": "aka2026merpsg",
-      "time_utc": "2026-06-21 10:55:33.156000+00:00",
-      "place": "56 km ENE of Pedro Bay, Alaska",
-      "mag": 2.1,
-      "latitude": 60.033,
-      "longitude": -153.214,
-      "depth_km": 142.7,
-      "emoji": "🟢",
-      "mag_class": "Faible",
-      "prob_Faible": 99.6,
-      "prob_Modere": 0.3,
-      "prob_Strong": 0.0,
-      "confiance": 99.6
-    },
-    {
-      "id": "hv74987742",
-      "time_utc": "2026-06-21 10:52:06.520000+00:00",
-      "place": "11 km NE of Pāhala, Hawaii",
-      "mag": 2.45,
-      "latitude": 19.2726669311523,
-      "longitude": -155.395004272461,
-      "depth_km": 31.6900005340576,
-      "emoji": "🟢",
-      "mag_class": "Faible",
-      "prob_Faible": 99.7,
-      "prob_Modere": 0.2,
-      "prob_Strong": 0.0,
-      "confiance": 99.7
-=======
-      "depth_km": 10.0,
-      "emoji": "🟢",
-      "mag_class": "Faible",
-      "prob_Faible": 99.5,
-      "prob_Modere": 0.4,
-      "prob_Strong": 0.0,
-      "confiance": 99.5
->>>>>>> Stashed changes
     }
   ]
 }

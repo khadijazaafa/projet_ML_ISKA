@@ -168,7 +168,7 @@ PROJET_VF
 
 Voici l’architecture complète du système, depuis la collecte des données jusqu’à la génération des prédictions et leur visualisation dans le dashboard :
 
-![Pipeline global du projet](screenshots/img3.png)
+![Pipeline global du projet](screenshots/IMG3.png)
 
 > Cette architecture illustre le flux complet : ingestion des données USGS → prétraitement → modèles ML → API FastAPI → dashboard interactif.
 
