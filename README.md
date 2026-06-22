@@ -8,7 +8,7 @@
 | Intitulé | Détails |
 |----------|---------|
 | **Module** | Machine Learning – Projet de Fin de Module |
-| **Réalisé par** | **ZAAFA Khadija** & **Aldeibes Ghanem Israa** |
+| **Réalisé par** | **ZAAFA Khadija** & **Aldiebes Ghanem Israa** |
 | **Encadrée par** | **Oumaima Guendoul** |
 | **Demandée par** | **El habib Benlhmar** |
 
