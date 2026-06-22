@@ -1,19 +1,31 @@
 {
+<<<<<<< Updated upstream
   "generated_at": "2026-06-22T10:37:12.721972+00:00",
+=======
+  "generated_at": "2026-06-22T12:28:22.649236+00:00",
+>>>>>>> Stashed changes
   "next_week_start": "2026-06-29",
   "nb_zones": 10,
   "zones": [
     {
       "zone": 4,
+<<<<<<< Updated upstream
       "pred_seismes": 357,
       "risk_level": "eleve",
       "lat": 51.31552296684179,
       "lon": -147.95606346613351
+=======
+      "pred_seismes": 351,
+      "risk_level": "eleve",
+      "lat": 51.19857464148866,
+      "lon": -147.79662580458594
+>>>>>>> Stashed changes
     },
     {
       "zone": 6,
       "pred_seismes": 125,
       "risk_level": "eleve",
+<<<<<<< Updated upstream
       "lat": 19.498140759920243,
       "lon": -104.60026149680988
     },
@@ -37,6 +49,31 @@
       "risk_level": "modere",
       "lat": 37.78123157894737,
       "lon": 73.28791052631578
+=======
+      "lat": 19.69241764637482,
+      "lon": -105.06891738425229
+    },
+    {
+      "zone": 7,
+      "pred_seismes": 55,
+      "risk_level": "eleve",
+      "lat": 49.83193272727273,
+      "lon": 164.16240363636362
+    },
+    {
+      "zone": 3,
+      "pred_seismes": 44,
+      "risk_level": "eleve",
+      "lat": 0.20460454545454548,
+      "lon": 126.91977727272727
+    },
+    {
+      "zone": 8,
+      "pred_seismes": 21,
+      "risk_level": "modere",
+      "lat": 38.03256666666667,
+      "lon": 71.25748095238094
+>>>>>>> Stashed changes
     },
     {
       "zone": 2,

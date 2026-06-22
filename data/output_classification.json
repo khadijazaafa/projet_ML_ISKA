@@ -1,14 +1,146 @@
 {
+<<<<<<< Updated upstream
   "generated_at": "2026-06-22T10:37:08.911989+00:00",
   "period_start": "2026-06-21T10:37:06.413900+00:00",
   "period_end": "2026-06-22T10:37:06.413900+00:00",
   "total": 64,
   "count_faible": 44,
   "count_modere": 20,
+=======
+  "generated_at": "2026-06-22T12:28:16.288429+00:00",
+  "period_start": "2026-06-21T12:28:13.662432+00:00",
+  "period_end": "2026-06-22T12:28:13.662432+00:00",
+  "total": 66,
+  "count_faible": 44,
+  "count_modere": 22,
+>>>>>>> Stashed changes
   "count_strong": 0,
   "model_used": "rf_pipeline.pkl",
   "earthquakes": [
     {
+<<<<<<< Updated upstream
+=======
+      "id": "us7000sv6r",
+      "time_utc": "2026-06-22 11:07:30.794000+00:00",
+      "place": "36 km WSW of Balaklava, Ukraine",
+      "mag": 4.3,
+      "latitude": 44.3502,
+      "longitude": 33.2038,
+      "depth_km": 10.0,
+      "emoji": "🟡",
+      "mag_class": "Modéré",
+      "prob_Faible": 2.0,
+      "prob_Modere": 90.9,
+      "prob_Strong": 7.1,
+      "confiance": 90.9
+    },
+    {
+      "id": "us7000sv6n",
+      "time_utc": "2026-06-22 10:58:46.165000+00:00",
+      "place": "76 km E of Kimbe, Papua New Guinea",
+      "mag": 4.8,
+      "latitude": -5.5796,
+      "longitude": 150.8235,
+      "depth_km": 108.069,
+      "emoji": "🟡",
+      "mag_class": "Modéré",
+      "prob_Faible": 0.7,
+      "prob_Modere": 97.7,
+      "prob_Strong": 1.6,
+      "confiance": 97.7
+    },
+    {
+      "id": "tx2026meolnk",
+      "time_utc": "2026-06-22 10:53:20.600000+00:00",
+      "place": "31 km WSW of Ackerly, Texas",
+      "mag": 2.4,
+      "latitude": 32.43,
+      "longitude": -102.032,
+      "depth_km": 8.3496,
+      "emoji": "🟢",
+      "mag_class": "Faible",
+      "prob_Faible": 99.1,
+      "prob_Modere": 0.8,
+      "prob_Strong": 0.1,
+      "confiance": 99.1
+    },
+    {
+      "id": "hv74988517",
+      "time_utc": "2026-06-22 10:48:09.200000+00:00",
+      "place": "13 km ESE of Pāhala, Hawaii",
+      "mag": 2.02,
+      "latitude": 19.136833190918,
+      "longitude": -155.373168945312,
+      "depth_km": 29.8099994659424,
+      "emoji": "🟢",
+      "mag_class": "Faible",
+      "prob_Faible": 99.7,
+      "prob_Modere": 0.3,
+      "prob_Strong": 0.0,
+      "confiance": 99.7
+    },
+    {
+      "id": "tx2026meoeie",
+      "time_utc": "2026-06-22 10:42:38.158000+00:00",
+      "place": "31 km WSW of Ackerly, Texas",
+      "mag": 2.1,
+      "latitude": 32.436,
+      "longitude": -102.038,
+      "depth_km": 9.2529,
+      "emoji": "🟢",
+      "mag_class": "Faible",
+      "prob_Faible": 99.7,
+      "prob_Modere": 0.3,
+      "prob_Strong": 0.0,
+      "confiance": 99.7
+    },
+    {
+      "id": "hv74988512",
+      "time_utc": "2026-06-22 10:41:34.570000+00:00",
+      "place": "15 km NNE of Pāhala, Hawaii",
+      "mag": 2.49,
+      "latitude": 19.3336658477783,
+      "longitude": -155.41650390625,
+      "depth_km": 29.0799999237061,
+      "emoji": "🟢",
+      "mag_class": "Faible",
+      "prob_Faible": 99.7,
+      "prob_Modere": 0.3,
+      "prob_Strong": 0.0,
+      "confiance": 99.7
+    },
+    {
+      "id": "us7000sv6e",
+      "time_utc": "2026-06-22 10:22:23.506000+00:00",
+      "place": "42 km SSW of Jurm, Afghanistan",
+      "mag": 5.2,
+      "latitude": 36.4903,
+      "longitude": 70.733,
+      "depth_km": 207.008,
+      "emoji": "🟡",
+      "mag_class": "Modéré",
+      "prob_Faible": 0.5,
+      "prob_Modere": 89.9,
+      "prob_Strong": 9.6,
+      "confiance": 89.9
+    },
+    {
+      "id": "us7000sv6w",
+      "time_utc": "2026-06-22 09:58:59.117000+00:00",
+      "place": "36 km NE of Samaná, Dominican Republic",
+      "mag": 2.9,
+      "latitude": 19.4102,
+      "longitude": -69.0669,
+      "depth_km": 35.0,
+      "emoji": "🟢",
+      "mag_class": "Faible",
+      "prob_Faible": 83.2,
+      "prob_Modere": 16.3,
+      "prob_Strong": 0.4,
+      "confiance": 83.2
+    },
+    {
+>>>>>>> Stashed changes
       "id": "us7000sv6a",
       "time_utc": "2026-06-22 09:43:52.220000+00:00",
       "place": "125 km SSE of Kuril’sk, Russia",
@@ -870,6 +1002,7 @@
       "mag": 3.0,
       "latitude": 52.452,
       "longitude": -170.861,
+<<<<<<< Updated upstream
       "depth_km": 10.0,
       "emoji": "🟢",
       "mag_class": "Faible",
@@ -967,6 +1100,15 @@
       "prob_Modere": 0.2,
       "prob_Strong": 0.0,
       "confiance": 99.7
+=======
+      "depth_km": 10.0,
+      "emoji": "🟢",
+      "mag_class": "Faible",
+      "prob_Faible": 99.5,
+      "prob_Modere": 0.4,
+      "prob_Strong": 0.0,
+      "confiance": 99.5
+>>>>>>> Stashed changes
     }
   ]
 }
