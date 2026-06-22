@@ -168,7 +168,6 @@ PROJET_VF
 
 ```bash
 git clone https://github.com/khadijazaafa/projet_ML_ISKA.git
-cd PROJET_VF
 ```
 
 ### 2. Créer un environnement virtuel
